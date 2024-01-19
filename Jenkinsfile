@@ -12,11 +12,12 @@ pipeline {
     }
     parameters {
         string(defaultValue: "", description: 'Diretorido da aplicação', name: 'COMPOSITE_APPLICATION_PATH')
-        choice(choices: ['development', 'homolog', 'production'], description: 'Ambiende de Deploy', name: 'DEPLOY_TO')
+        choice(choices: ['dev', 'qualidade', 'prod'], description: 'Ambiende de Deploy', name: 'DEPLOY_TO')
     }
     stages {
         stage ('Build') { 
             steps{
+                echo "Repositorio: ${COMPOSITE_APPLICATION_PATH}"
                 withMaven(
                     maven: 'maven-3', 
                     mavenLocalRepo: '.repository', 
@@ -29,7 +30,7 @@ pipeline {
       
         stage ('Deploy Dev') {
             when{
-                expression { params.DEPLOY_TO == 'development' }
+                expression { params.DEPLOY_TO == 'dev' }
             }
             steps{
                 sh 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_DEV_BASE_URL + ' ' + ESB_DEV_CREDS_USR + ' ' + ESB_DEV_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH +' ' + ESB_DEV_SSL_TRUST_STORE_JKS + ' ' + ESB_DEV_SSL_TRUST_STORE_PASSWORD
@@ -47,7 +48,7 @@ pipeline {
 
         stage ('Deploy Prod') {
             when{
-                expression { params.DEPLOY_TO == 'production' }
+                expression { params.DEPLOY_TO == 'prod' }
             }
             steps{
                 sh 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_QLD_BASE_URL + ' ' + ESB_QLD_CREDS_USR + ' ' + ESB_QLD_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH +' /var/jenkins_home/wso2/esb/dev/wso2carbon.jks ' + ESB_QLD_SSL_TRUST_STORE_PASSWORD
