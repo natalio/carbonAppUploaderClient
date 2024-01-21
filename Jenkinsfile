@@ -17,7 +17,7 @@ pipeline {
     stages {
         stage ('Build') { 
             steps{
-                echo "Repositorio: ${COMPOSITE_APPLICATION_PATH}"
+                echo 'Repositorio: ' + COMPOSITE_APPLICATION_PATH
                 withMaven(
                     maven: 'maven-3', 
                     mavenLocalRepo: '.repository', 
