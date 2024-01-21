@@ -9,7 +9,10 @@ pipeline {
         ESB_QLD_BASE_URL = credentials('esb-qld-base-url')
         ESB_QLD_SSL_TRUST_STORE_JKS    = credentials('esb-qld-ssl-trust-store-jks')
         ESB_QLD_SSL_TRUST_STORE_PASSWORD = credentials('esb-qld-ssl-trust-store-password')
+        ESB_PROD_CREDS = credentials('esb-prod-creds')
+        ESB_PROD_BASE_URL = credentials('esb-prod-base-url')
         ESB_PROD_SSL_TRUST_STORE_JKS    = credentials('esb-prod-ssl-trust-store-jks')
+        ESB_PROD_SSL_TRUST_STORE_PASSWORD = credentials('esb-prod-ssl-trust-store-password')
     }
     parameters {
         string(defaultValue: "", description: 'Diretorido da aplicação', name: 'COMPOSITE_APPLICATION_PATH')
@@ -34,7 +37,7 @@ pipeline {
                 expression { params.DEPLOY_TO == 'dev' }
             }
             steps{
-                sh 'cp '+ESB_PROD_SSL_TRUST_STORE_JKS + ' ./target/cert.jks'
+                sh 'cp ' + ESB_DEV_SSL_TRUST_STORE_JKS + ' ./target/cert.jks'
                 sh 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_DEV_BASE_URL + ' ' + ESB_DEV_CREDS_USR + ' ' + ESB_DEV_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH + ' '+ env.WORKSPACE +'/target/cert.jks ' + ESB_DEV_SSL_TRUST_STORE_PASSWORD
             }
         }
@@ -44,7 +47,8 @@ pipeline {
                 expression { params.DEPLOY_TO == 'qualidade' }
             }
             steps{
-                sh 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_QLD_BASE_URL + ' ' + ESB_QLD_CREDS_USR + ' ' + ESB_QLD_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH +' ' + ESB_QLD_SSL_TRUST_STORE_JKS + ' ' + ESB_QLD_SSL_TRUST_STORE_PASSWORD
+                sh 'cp ' + ESB_QLD_SSL_TRUST_STORE_JKS + ' ./target/cert.jks'
+                sh 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_QLD_BASE_URL + ' ' + ESB_QLD_CREDS_USR + ' ' + ESB_QLD_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH + ' '+ env.WORKSPACE +'/target/cert.jks ' + ESB_QLD_SSL_TRUST_STORE_PASSWORD
             }
         }
 
@@ -53,7 +57,8 @@ pipeline {
                 expression { params.DEPLOY_TO == 'prod' }
             }
             steps{
-                sh 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_QLD_BASE_URL + ' ' + ESB_QLD_CREDS_USR + ' ' + ESB_QLD_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH +' /var/jenkins_home/wso2/esb/dev/wso2carbon.jks ' + ESB_QLD_SSL_TRUST_STORE_PASSWORD
+                sh 'cp ' + ESB_PROD_SSL_TRUST_STORE_JKS + ' ./target/cert.jks'
+                sh 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_PROD_BASE_URL + ' ' + ESB_PROD_CREDS_USR + ' ' + ESB_PROD_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH + ' '+ env.WORKSPACE +'/target/cert.jks ' + ESB_PROD_SSL_TRUST_STORE_PASSWORD
             }
         }
     }
