@@ -33,7 +33,7 @@ pipeline {
                 expression { params.DEPLOY_TO == 'dev' }
             }
             steps{
-                sh 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_DEV_BASE_URL + ' ' + ESB_DEV_CREDS_USR + ' ' + ESB_DEV_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH +' ' + ESB_DEV_SSL_TRUST_STORE_JKS + ' ' + ESB_DEV_SSL_TRUST_STORE_PASSWORD
+                sh 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_DEV_BASE_URL + ' ' + ESB_DEV_CREDS_USR + ' ' + ESB_DEV_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH + ' /var/jenkins_home/wso2/esb/dev/wso2carbon.jks ' + ESB_DEV_SSL_TRUST_STORE_PASSWORD
             }
         }
 
