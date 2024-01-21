@@ -25,7 +25,8 @@ pipeline {
                 withMaven(
                     maven: 'maven-3', 
                     mavenLocalRepo: '.repository', 
-                    traceability: true
+                    traceability: true,
+                    jdk: 'java8'
                 ) {
                     bat "mvn clean install"
                 }
