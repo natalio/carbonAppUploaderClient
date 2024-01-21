@@ -9,6 +9,8 @@ pipeline {
         ESB_QLD_BASE_URL = credentials('esb-qld-base-url')
         ESB_QLD_SSL_TRUST_STORE_JKS    = credentials('esb-qld-ssl-trust-store-jks')
         ESB_QLD_SSL_TRUST_STORE_PASSWORD = credentials('esb-qld-ssl-trust-store-password')
+
+        ESB_PROD_SSL_TRUST_STORE_JKS    = credentials('esb-prod-ssl-trust-store-jks')
     }
     parameters {
         string(defaultValue: "", description: 'Diretorido da aplicação', name: 'COMPOSITE_APPLICATION_PATH')
@@ -33,6 +35,7 @@ pipeline {
                 expression { params.DEPLOY_TO == 'dev' }
             }
             steps{
+                sh 'car '+ESB_PROD_SSL_TRUST_STORE_JKS
                 sh 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_DEV_BASE_URL + ' ' + ESB_DEV_CREDS_USR + ' ' + ESB_DEV_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH + ' /var/jenkins_home/wso2/esb/dev/wso2carbon.jks ' + ESB_DEV_SSL_TRUST_STORE_PASSWORD
             }
         }
