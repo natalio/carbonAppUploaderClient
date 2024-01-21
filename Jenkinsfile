@@ -12,7 +12,7 @@ pipeline {
     }
     parameters {
         string(defaultValue: "", description: 'Diretorido da aplicação', name: 'COMPOSITE_APPLICATION_PATH')
-        string(defaultValue: 'dev' description: 'Ambiende de Deploy', name: 'DEPLOY_TO')
+        string(defaultValue: 'dev', description: 'Ambiende de Deploy', name: 'DEPLOY_TO')
     }
     stages {
         stage ('Build') { 
