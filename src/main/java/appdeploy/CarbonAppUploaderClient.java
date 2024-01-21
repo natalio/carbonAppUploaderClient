@@ -1,6 +1,5 @@
 package appdeploy;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
@@ -81,9 +80,9 @@ public class CarbonAppUploaderClient {
 
 		try {
 			logger.log(Level.INFO, LogMessages.LOAD_WSDL.getMessage());
-			st = new CarbonAppUploaderStub(
-					String.format("%s/services/CarbonAppUploader", baseUrl));
-			logger.log(Level.INFO, LogMessages.CONNECTION_SERVICE.getMessage());
+			String uri = String.format("%s/services/CarbonAppUploader", baseUrl);
+			st = new CarbonAppUploaderStub(uri);
+			logger.log(Level.INFO, LogMessages.CONNECTION_SERVICE.getMessage()+" "+uri);
 			ServiceClient client = st._getServiceClient();
 			logger.log(Level.INFO, LogMessages.LOGIN_ON_SERVICE.getMessage());
 			Options client_options = client.getOptions();
