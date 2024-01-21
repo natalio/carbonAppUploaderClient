@@ -27,7 +27,7 @@ pipeline {
                     mavenLocalRepo: '.repository', 
                     traceability: true
                 ) {
-                    sh "mvn clean install"
+                    bat "mvn clean install"
                 }
             }
         }
@@ -37,8 +37,8 @@ pipeline {
                 expression { params.DEPLOY_TO == 'dev' }
             }
             steps{
-                sh 'cp ' + ESB_DEV_SSL_TRUST_STORE_JKS + ' ./target/cert.jks'
-                sh 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_DEV_BASE_URL + ' ' + ESB_DEV_CREDS_USR + ' ' + ESB_DEV_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH + ' '+ env.WORKSPACE +'/target/cert.jks ' + ESB_DEV_SSL_TRUST_STORE_PASSWORD
+                bat 'cp ' + ESB_DEV_SSL_TRUST_STORE_JKS + ' ./target/cert.jks'
+                bat 'java -jar ./target/appdeploy-0.0.1-jar-with-dependencies.jar ' + ESB_DEV_BASE_URL + ' ' + ESB_DEV_CREDS_USR + ' ' + ESB_DEV_CREDS_PSW + ' '+ COMPOSITE_APPLICATION_PATH + ' '+ env.WORKSPACE +'/target/cert.jks ' + ESB_DEV_SSL_TRUST_STORE_PASSWORD
             }
         }
 
